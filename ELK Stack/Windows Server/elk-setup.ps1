@@ -1,3 +1,13 @@
+# Examples
+##### No SSL
+# elk-stack.ps1 -ELKPath C:\ELK
+##### No SSL With Version
+# elk-stack.ps1 -ELKPath C:\ELK -Version 8.1.0
+##### SSL
+# elk-stack.ps1 -ELKPath C:\ELK -SSL -DNS some.dns.com
+##### SSL With Version
+# elk-stack.ps1 -ELKPath C:\ELK -Version 8.1.0 -SSL -DNS some.dns.com
+
 param (
     [Parameter(Mandatory=$true)]$ELKPath,
     $Version = "8.1.0",
