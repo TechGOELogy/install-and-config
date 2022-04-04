@@ -1,0 +1,4 @@
+xpack.security.enabled: true
+xpack.security.enrollment.enabled: true
+cluster.initial_master_nodes: ["elk"]
+http.host: [_local_, _site_]
