@@ -1,0 +1,6 @@
+server.host: "0.0.0.0"
+server.publicBaseUrl: "http://localhost"
+elasticsearch.hosts: ["http://localhost:9200"]
+elasticsearch.username: "kibana_system"
+elasticsearch.password: "kibana_system_password"
+elasticsearch.ssl.verificationMode: none
