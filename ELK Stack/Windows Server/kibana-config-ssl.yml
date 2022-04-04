@@ -1,8 +1,8 @@
 server.host: "0.0.0.0"
 server.publicBaseUrl: "https://some.dns.com"
 server.ssl.enabled: true
-server.ssl.certificate: path/to/your/crt.pem
-server.ssl.key: path/to/your/key.pem
+server.ssl.certificate: C:\path\to\your\crt.pem
+server.ssl.key: C:\path\to\your\key.pem
 elasticsearch.hosts: ["https://some.dns.com:9200"]
 elasticsearch.username: "kibana_system"
 elasticsearch.password: "kibana_system_password"
