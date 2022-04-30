@@ -3,8 +3,9 @@ SSL=false
 DNS=localhost
 ADMIN_USER=admin
 ADMIN_PASSWORD=$RANDOM
+EMAIL="email@example.com"
 
-while getopts ":p:s:d:" opt; do
+while getopts ":l:s:d:u:p:e:" opt; do
     case $opt in
         l) PROMETHEUS_DIR="$OPTARG"
         ;;
@@ -15,6 +16,8 @@ while getopts ":p:s:d:" opt; do
         u) ADMIN_USER="$OPTARG"
         ;;
         p) ADMIN_PASSWORD="$OPTARG"
+        ;;
+        e) EMAIL="$OPTARG"
         ;;
         \?) echo "Invalid option -$OPTARG"
         exit 1
@@ -29,10 +32,24 @@ while getopts ":p:s:d:" opt; do
 done
 
 if [ "$SSL" = true ] ; then
+
+    regex="^(([-a-zA-Z0-9\!#\$%\&\'*+/=?^_\`{\|}~]+|(\"([][,:;<>\&@a-zA-Z0-9\!#\$%\&\'*+/=?^_\`{\|}~-]|(\\\\[\\ \"]))+\"))\.)*([-a-zA-Z0-9\!#\$%\&\'*+/=?^_\`{\|}~]+|(\"([][,:;<>\&@a-zA-Z0-9\!#\$%\&\'*+/=?^_\`{\|}~-]|(\\\\[\\ \"]))+\"))@\w((-|\w)*\w)*\.(\w((-|\w)*\w)*\.)*\w{2,4}$"
+
+    if [ "$EMAIL" = "email@example.com" ] ; then
+        echo "Please provide a valid email id not email@example.com with -e when SSL is true"
+        exit 1
+    fi
+
+    if ! [[ "$EMAIL" =~ $regex ]] ; then
+        echo "Please provide a valid email id with -e when SSL is true"
+        exit 1
+    fi
+
     if [ "$DNS" = "localhost" ] ; then
         echo "Please provide a valid DNS with -d when SSL is true"
         exit 1
     fi
+
 fi
 
 if [ -d "$PROMETHEUS_DIR" ] ; then
@@ -42,9 +59,12 @@ else
     echo "$PROMETHEUS_DIR does not exist"
 fi
 
+apt update
+
 wget https://github.com/prometheus/prometheus/releases/download/v2.35.0/prometheus-2.35.0.linux-amd64.tar.gz
 tar -xvzf prometheus-2.35.0.linux-amd64.tar.gz
 mv prometheus-2.35.0.linux-amd64 "$PROMETHEUS_DIR"
+mkdir $PROMETHEUS_DIR/data
 
 apt -y install apache2-utils
 BCRYPT_WITH_USER=$(htpasswd -nbBC 10 $ADMIN_USER $ADMIN_PASSWORD)
@@ -53,7 +73,7 @@ BCRYPT=$(echo $BCRYPT_WITH_USER | cut -d ":" -f 2)
 if [ "$SSL" = true ] ; then
 
     apt -y install certbot
-    certbot certonly -n -d $DNS --standalone
+    certbot certonly -n -d $DNS --standalone --agree-tos --email $EMAIL
     mkdir $PROMETHEUS_DIR/ssl
     cp /etc/letsencrypt/live/$DNS/fullchain.pem $PROMETHEUS_DIR/ssl
     cp /etc/letsencrypt/live/$DNS/privkey.pem $PROMETHEUS_DIR/ssl
