@@ -1,3 +1,5 @@
+# Check README.md for usage and other information
+
 PROMETHEUS_DIR=/etc/prometheus
 SSL=false
 DNS=localhost
