@@ -6,8 +6,9 @@ DNS=localhost
 ADMIN_USER=admin
 ADMIN_PASSWORD=$RANDOM
 EMAIL="email@example.com"
+PROMETHEUS_SETUP_URL="https://github.com/prometheus/prometheus/releases/download/v2.35.0/prometheus-2.35.0.linux-amd64.tar.gz"
 
-while getopts ":l:s:d:u:p:e:" opt; do
+while getopts ":l:s:d:u:p:e:w:" opt; do
     case $opt in
         l) PROMETHEUS_DIR="$OPTARG"
         ;;
@@ -20,6 +21,8 @@ while getopts ":l:s:d:u:p:e:" opt; do
         p) ADMIN_PASSWORD="$OPTARG"
         ;;
         e) EMAIL="$OPTARG"
+        ;;
+        w) PROMETHEUS_SETUP_URL="$OPTARG"
         ;;
         \?) echo "Invalid option -$OPTARG"
         exit 1
@@ -63,7 +66,7 @@ fi
 
 apt update
 
-wget https://github.com/prometheus/prometheus/releases/download/v2.35.0/prometheus-2.35.0.linux-amd64.tar.gz
+wget $PROMETHEUS_SETUP_URL
 tar -xvzf prometheus-2.35.0.linux-amd64.tar.gz
 mv prometheus-2.35.0.linux-amd64 "$PROMETHEUS_DIR"
 mkdir $PROMETHEUS_DIR/data
