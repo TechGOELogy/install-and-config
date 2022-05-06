@@ -9,6 +9,7 @@
 `-e` : Email to be used for Let's Encrypt notifications. *Default* : `email@example.com`    
 `-u` : Prometheus admin User. *Default* : `admin`    
 `-p` : Prometheus admin Password. *Default* : `$RANDOM`    
+`-w` : Prometheus taz.gz URL. *Default* : `https://github.com/prometheus/prometheus/releases/download/v2.35.0/prometheus-2.35.0.linux-amd64.tar.gz`    
 
 **Usage**    
 
@@ -23,5 +24,8 @@ SSL
 
 Custome Username and Password    
 `./prometheus-setup.sh -u your_user -p your_strong_password`    
+
+Specific Prometheus taz URL    
+`./prometheus-setup.sh -w your_url`    
     
 **Note** : DNS and Email is required if SSL is enabled
