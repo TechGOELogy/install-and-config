@@ -115,8 +115,6 @@ try {
     Set-Content -Path $PGAPath\alertmanager\web-config.yml -Value $WebConfig
     Set-Content -Path $PGAPath\grafana\conf\grafana.ini -Value $GrafanaIni
 
-    #nssm.exe install prometheus "C:\PGA\prometheus\prometheus.exe" --config.file="C:\PGA\prometheus\prometheus.yml" --web.config.file="C:\PGA\prometheus\web-config.yml"
-
     & $PGAPath\nssm\win64\nssm.exe install Prometheus "$PGAPath\prometheus\prometheus.exe" `
         --config.file="$PGAPath\prometheus\prometheus.yml" `
         --storage.tsdb.path="$PGAPath\prometheus\data" `
